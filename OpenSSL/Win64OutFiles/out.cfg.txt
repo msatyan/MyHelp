@@ -1,0 +1,58 @@
+Configuring OpenSSL version 1.1.0c (0x1010003fL)
+    no-asan         [default]  OPENSSL_NO_ASAN
+    no-asm          [option]   OPENSSL_NO_ASM
+    no-crypto-mdebug [default]  OPENSSL_NO_CRYPTO_MDEBUG
+    no-crypto-mdebug-backtrace [default]  OPENSSL_NO_CRYPTO_MDEBUG_BACKTRACE
+    no-ec_nistp_64_gcc_128 [default]  OPENSSL_NO_EC_NISTP_64_GCC_128
+    no-egd          [default]  OPENSSL_NO_EGD
+    no-fuzz-afl     [default]  OPENSSL_NO_FUZZ_AFL
+    no-fuzz-libfuzzer [default]  OPENSSL_NO_FUZZ_LIBFUZZER
+    no-heartbeats   [default]  OPENSSL_NO_HEARTBEATS
+    no-md2          [default]  OPENSSL_NO_MD2 (skip dir)
+    no-msan         [default]  OPENSSL_NO_MSAN
+    no-rc5          [default]  OPENSSL_NO_RC5 (skip dir)
+    no-sctp         [default]  OPENSSL_NO_SCTP
+    no-ssl-trace    [default]  OPENSSL_NO_SSL_TRACE
+    no-ssl3         [default]  OPENSSL_NO_SSL3
+    no-ssl3-method  [default]  OPENSSL_NO_SSL3_METHOD
+    no-ubsan        [default]  OPENSSL_NO_UBSAN
+    no-unit-test    [default]  OPENSSL_NO_UNIT_TEST
+    no-weak-ssl-ciphers [default]  OPENSSL_NO_WEAK_SSL_CIPHERS
+    no-zlib         [default] 
+    no-zlib-dynamic [default] 
+Configuring for debug-VC-WIN64A
+CC            =cl
+CFLAG         =-W3 -wd4090 -Gs0 -GF -Gy -nologo -DOPENSSL_SYS_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -D_CRT_SECURE_NO_DEPRECATE -DUNICODE -D_UNICODE /MDd /Od -DDEBUG -D_DEBUG 
+SHARED_CFLAG  =
+DEFINES       =OPENSSL_USE_APPLINK DSO_WIN32 OPENSSL_THREADS OPENSSL_NO_STATIC_ENGINE OPENSSL_PIC
+LFLAG         =/nologo /debug
+PLIB_LFLAG    =
+EX_LIBS       =ws2_32.lib gdi32.lib advapi32.lib crypt32.lib user32.lib 
+APPS_OBJ      =win32_init.o ../ms/applink.o
+CPUID_OBJ     =mem_clr.o
+UPLINK_OBJ    =../ms/uplink.o uplink-x86_64.o
+BN_ASM        =bn_asm.o
+EC_ASM        =
+DES_ENC       =des_enc.o fcrypt_b.o
+AES_ENC       =aes_core.o aes_cbc.o
+BF_ENC        =bf_enc.o
+CAST_ENC      =c_enc.o
+RC4_ENC       =rc4_enc.o rc4_skey.o
+RC5_ENC       =rc5_enc.o
+MD5_OBJ_ASM   =
+SHA1_OBJ_ASM  =
+RMD160_OBJ_ASM=
+CMLL_ENC      =camellia.o cmll_misc.o cmll_cbc.o
+MODES_OBJ     =
+PADLOCK_OBJ   =
+CHACHA_ENC    =chacha_enc.o
+POLY1305_OBJ  =
+BLAKE2_OBJ    =
+PROCESSOR     =
+RANLIB        =true
+ARFLAGS       =/nologo
+PERL          =C:\Perl64\bin\perl.exe
+
+SIXTY_FOUR_BIT mode
+
+Configured for VC-WIN64A.
