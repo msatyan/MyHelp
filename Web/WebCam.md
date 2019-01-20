@@ -68,4 +68,49 @@ https://blog.sessionstack.com/how-javascript-works-deep-dive-into-websockets-and
 ### WebSockets, HTTP/2, and SSE
 https://medium.com/axiomzenteam/websockets-http-2-and-sse-5c24ae4d9d96
 
+### Do you really need WebSockets
+https://blog.stanko.io/do-you-really-need-websockets-343aed40aa9b
 
+
+---
+# Server Sent Events (SSE)
+The idea of Server Sent Events is to provide a standard way for you to open a connection and push data unilaterally from the server to the client. Let’s check an example
+
+```JavaScript
+// Server implementation of SSE
+
+const http = require('http');
+
+const server = http.createServer(function (req, res) {
+  if (req.url === '/live') {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    });
+    res.write('retry: 5000\n');
+
+    const interval = setInterval(() => {
+      res.write('data: ' + new Date() + '\n\n');
+    }, 1000);
+
+    req.on('end', () => clearInterval(interval));
+    return;
+  }
+
+  // Normal requests
+  return res.end();
+});
+
+server.listen(3000);
+```
+
+#### Client implementation of SSE
+```html
+<script>
+  var source = new EventSource('/live');
+  source.onmessage = function(event) {
+    console.log('Incoming date:' + event.data);
+  };
+</script>
+```
