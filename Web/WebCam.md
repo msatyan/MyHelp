@@ -24,7 +24,8 @@ https://simpl.info/getusermedia/sources/
 https://codelabs.developers.google.com/codelabs/webrtc-web/#0
 
 ### WebRTC in the real world: STUN, TURN and signaling
-https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/
+https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/  
+https://github.com/niklasenbom/RecordingApp
 
 
 ### Choose Cameras, Microphones and Speakers from Your Web App
@@ -55,6 +56,9 @@ https://github.com/tiagobutzke/LiveWebcamWithHTML5
 
 ### Stream a webcam using Javascript, NodeJS, Android, Opera Mobile, Web Sockets and HTML5
 http://francisshanahan.com/index.php/2011/stream-a-webcam-using-javascript-nodejs-android-opera-mobile-web-sockets-and-html5/
+
+### Unreal Webcam Fun with getUserMedia() and HTML5 Canvas
+https://www.youtube.com/watch?v=ElWFcBlVk-o
 
 
 
