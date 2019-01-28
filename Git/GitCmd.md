@@ -136,3 +136,6 @@ git push -f origin master
 
 ### FYI:
 * [Making a Pull Request](https://www.atlassian.com/git/tutorials/making-a-pull-request)
+* [Become a Git pro in just one blog](https://itnext.io/become-a-git-pro-in-just-one-blog-a-thorough-guide-to-git-architecture-and-command-line-interface-93fbe9bdb395)
+
+
