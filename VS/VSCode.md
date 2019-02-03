@@ -56,6 +56,7 @@ sudo apt-get install code
 
 * [Angular 5 and TypeScript/HTML VS Code Snippets](https://marketplace.visualstudio.com/items?itemName=danwahlin.angular2-snippets)
 
+* [Auto Import](https://marketplace.visualstudio.com/items?itemName=steoates.autoimport)
 ---
 * [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 * [Auto-Open Markdown Preview](https://marketplace.visualstudio.com/items?itemName=hnw.vscode-auto-open-markdown-preview)
