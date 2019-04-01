@@ -46,7 +46,8 @@ sudo add-apt-repository \
 # INSTALL DOCKER CE
 # Install Docker from the Docker Repository
 sudo apt-get update
-sudo apt-get install docker-ce
+# sudo apt-get install docker-ce
+sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 # If you want to install docker version from the Ubuntu repository
 # sudo apt install docker.io
@@ -59,7 +60,15 @@ systemctl enable docker
 docker --version
 ```
 
-### Run Hello World
+### Run a Hello World
 ```bash
+# run = create + start
+sudo docker run hello-world
+# or
+sudo docker run busybox echo my hello world
+```
 
+### Delete all Containers
+```bash
+sudo docker system prune
 ```
