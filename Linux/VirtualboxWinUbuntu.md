@@ -108,7 +108,7 @@ ip add
 
 
 ##### Configure NAT and Host Only Network
-- https://www.youtube.com/watch?v=YkbShiPaE_0
+- [How To Configure Static IP address on Ubuntu 16.04 LTS using VirtualBox](https://www.youtube.com/watch?v=YkbShiPaE_0)
 - NAT  (DHCP)
 - Host Only Network (static)
 

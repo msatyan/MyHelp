@@ -20,7 +20,12 @@ sudo yum install code
 
 # Debian/Ubuntu based distributions
 sudo apt-get update
-sudo apt-get install code 
+sudo apt-get install code
+
+# to remove
+sudo apt-get remove code
+sudo apt-get purge code
+
 ```
 
 #### Disable telemetry reporting
@@ -54,7 +59,7 @@ sudo apt-get install code
 * [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint)
 
 
-* [Angular 5 and TypeScript/HTML VS Code Snippets](https://marketplace.visualstudio.com/items?itemName=danwahlin.angular2-snippets)
+* [Angular and TypeScript/HTML VS Code Snippets](https://marketplace.visualstudio.com/items?itemName=danwahlin.angular2-snippets)
 
 * [Auto Import](https://marketplace.visualstudio.com/items?itemName=steoates.autoimport)
 ---
