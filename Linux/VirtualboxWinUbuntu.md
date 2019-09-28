@@ -7,6 +7,20 @@ Please refer the actual documentation for full set of information, here is a sna
 [Youtube: NAT & Port Forwarding, Bridged, Internal, Host-Only](https://www.youtube.com/watch?v=cDF4X7RmV4Q)
 
 
+### network map
+```bash
++-----------+-------------+-------------+----------------+----------------+
+|           | VM <-> Host | VM1 <-> VM2 | VM -> Internet | VM <- Internet |
++-----------+-------------+-------------+----------------+----------------+
+| HostOnly  |     Yes     |     Yes     |      No        |       No       |
+| Internal  |     No      |     Yes     |      No        |       No       |
+| Bridged   |     Yes     |     Yes     |      Yes       |       Yes      |
+| NAT       |     No      |     No      |      Yes       |  Port forward  |
+| NATNet    |     No      |     Yes     |      Yes       |       No       |
++-----------+-------------+-------------+----------------+----------------+
+```
+
+
 ```bash
 route -n
 ifconfig -a
