@@ -34,3 +34,5 @@ Release/*
 tmp.*
 *.tmp
 
+.history
+.history/*
