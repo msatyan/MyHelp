@@ -46,6 +46,7 @@ This can be used to create a different kind of software-based network which is v
 - By using Virtualbox Create a Host-only networking adapter on your host (if it is not already exist then only).
 - On your VM setup select the Host-only networking also.
 ##### Create a Host-only networking
+- [pdf: Host-only network setting image](./VirtualBox-HostOnlyNetwork-img.pdf)
 ```bash
 # 1) From the host File Menu of the host select
 - Host Network Manager
