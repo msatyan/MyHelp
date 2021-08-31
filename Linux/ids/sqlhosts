@@ -1,0 +1,7 @@
+# if you are using loop back connection then 
+# ids0     onsoctcp   127.0.0.1  5550
+# ids0_dr  drsoctcp   127.0.0.1  5560
+# if you are using static IP then give the IP
+ids0     onsoctcp   192.168.56.5  5550
+ids0_dr  drsoctcp   192.168.56.5  5560
+

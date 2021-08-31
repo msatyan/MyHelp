@@ -1,0 +1,821 @@
+/work$ az group create  --name rdResourceGroup1 --location eastus
+{
+  "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1",
+  "location": "eastus",
+  "managedBy": null,
+  "name": "rdResourceGroup1",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null
+}
+
+
+
+/work$ az disk create -g rdResourceGroup1 -n DataDisk1 --size-gb 10 --sku Premium_LRS
+{
+  "creationData": {
+    "createOption": "Empty",
+    "imageReference": null,
+    "sourceResourceId": null,
+    "sourceUri": null,
+    "storageAccountId": null
+  },
+  "diskSizeGb": 10,
+  "encryptionSettings": null,
+  "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/disks/DataDisk1",
+  "location": "eastus",
+  "managedBy": null,
+  "name": "DataDisk1",
+  "osType": null,
+  "provisioningState": "Succeeded",
+  "resourceGroup": "rdResourceGroup1",
+  "sku": {
+    "name": "Premium_LRS",
+    "tier": "Premium"
+  },
+  "tags": {},
+  "timeCreated": "2017-08-01T18:18:03.163962+00:00",
+  "type": "Microsoft.Compute/disks"
+}
+
+
+
+
+/work$ az disk list     --resource-group rdResourceGroup1 --output table
+  DiskSizeGb  Location    Name       ProvisioningState    ResourceGroup    TimeCreated
+------------  ----------  ---------  -------------------  ---------------  --------------------------------
+          10  eastus      DataDisk1  Succeeded            rdResourceGroup1      2017-08-01T18:18:03.163962+00:00
+
+
+
+/work$ az vm create --resource-group rdResourceGroup1 --name rdMasterVM1 --image CentOS --generate-ssh-keys --admin-username rdadmin1 --authentication-type password --attach-data-disks DataDisk1
+Admin Password:
+Confirm Admin Password:
+{
+  "fqdns": "",
+  "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/virtualMachines/rdMasterVM1",
+  "location": "eastus",
+  "macAddress": "00-0D-3A-1A-64-20",
+  "powerState": "VM running",
+  "privateIpAddress": "10.0.0.4",
+  "publicIpAddress": "40.121.155.24",
+  "resourceGroup": "rdResourceGroup1"
+}
+
+
+
+/work$ az vm list --resource-group rdResourceGroup1
+[
+  {
+    "availabilitySet": null,
+    "diagnosticsProfile": null,
+    "hardwareProfile": {
+      "vmSize": "Standard_DS1_v2"
+    },
+    "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/virtualMachines/rdMasterVM1",
+    "identity": null,
+    "instanceView": null,
+    "licenseType": null,
+    "location": "eastus",
+    "name": "rdMasterVM1",
+    "networkProfile": {
+      "networkInterfaces": [
+        {
+          "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkInterfaces/rdMasterVM1VMNic",
+          "primary": null,
+          "resourceGroup": "rdResourceGroup1"
+        }
+      ]
+    },
+    "osProfile": {
+      "adminPassword": null,
+      "adminUsername": "rdadmin1",
+      "computerName": "rdMasterVM1",
+      "customData": null,
+      "linuxConfiguration": {
+        "disablePasswordAuthentication": false,
+        "ssh": null
+      },
+      "secrets": [],
+      "windowsConfiguration": null
+    },
+    "plan": null,
+    "provisioningState": "Succeeded",
+    "resourceGroup": "rdResourceGroup1",
+    "resources": null,
+    "storageProfile": {
+      "dataDisks": [
+        {
+          "caching": "None",
+          "createOption": "attach",
+          "diskSizeGb": 10,
+          "image": null,
+          "lun": 0,
+          "managedDisk": {
+            "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/disks/DataDisk1",
+            "resourceGroup": "rdResourceGroup1",
+            "storageAccountType": "Premium_LRS"
+          },
+          "name": "DataDisk1",
+          "vhd": null
+        }
+      ],
+      "imageReference": {
+        "id": null,
+        "offer": "CentOS",
+        "publisher": "OpenLogic",
+        "sku": "7.3",
+        "version": "latest"
+      },
+      "osDisk": {
+        "caching": "ReadWrite",
+        "createOption": "fromImage",
+        "diskSizeGb": 31,
+        "encryptionSettings": null,
+        "image": null,
+        "managedDisk": {
+          "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/disks/osdisk_e583a87906",
+          "resourceGroup": "rdResourceGroup1",
+          "storageAccountType": "Premium_LRS"
+        },
+        "name": "osdisk_e583a87906",
+        "osType": "Linux",
+        "vhd": null
+      }
+    },
+    "tags": {},
+    "type": "Microsoft.Compute/virtualMachines",
+    "vmId": "1b64ee68-0272-4655-b4e3-fa1110ff81b9"
+  }
+]
+
+
+//////////////////////////////////////////////////////////
+ ssh rdadmin1@40.121.155.24
+ cat /etc/os-release
+ lsblk
+  
+ 
+ /work$ ssh rdadmin1@40.121.155.24
+The authenticity of host '40.121.155.24 (40.121.155.24)' can't be established.
+ECDSA key fingerprint is SHA256:86F7AfSoSlOxVS159CBZTmHsozyxdTz5MdRGhtUDguU.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '40.121.155.24' (ECDSA) to the list of known hosts.
+Password:
+
+
+
+
+[rdadmin1@rdMasterVM1 ~]$ cd /
+[rdadmin1@rdMasterVM1 /]$ sudo mkdir /work
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for rdadmin1:
+
+[rdadmin1@rdMasterVM1 /]$ sudo mkdir /work/idsimg
+[rdadmin1@rdMasterVM1 /]$ sudo mkdir /work/ids
+[rdadmin1@rdMasterVM1 /]$ sudo chmod 777 /work/idsimg
+[rdadmin1@rdMasterVM1 /]$ sudo chmod 777 /work/ids
+
+
+[rdadmin1@rdMasterVM1 idsimg]$  cat /etc/os-release
+NAME="CentOS Linux"
+VERSION="7 (Core)"
+ID="centos"
+ID_LIKE="rhel fedora"
+VERSION_ID="7"
+PRETTY_NAME="CentOS Linux 7 (Core)"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:centos:centos:7"
+HOME_URL="https://www.centos.org/"
+BUG_REPORT_URL="https://bugs.centos.org/"
+
+CENTOS_MANTISBT_PROJECT="CentOS-7"
+CENTOS_MANTISBT_PROJECT_VERSION="7"
+REDHAT_SUPPORT_PRODUCT="centos"
+REDHAT_SUPPORT_PRODUCT_VERSION="7"
+
+
+
+[rdadmin1@rdMasterVM1 idsimg]$  lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+fd0      2:0    1    4K  0 disk
+sda      8:0    0   30G  0 disk
+├─sda1   8:1    0  500M  0 part /boot
+└─sda2   8:2    0 29.5G  0 part /
+sdb      8:16   0    7G  0 disk
+└─sdb1   8:17   0    7G  0 part /mnt/resource
+sdc      8:32   0   10G  0 disk
+sr0     11:0    1  1.1M  0 rom
+[rdadmin1@rdMasterVM1 idsimg]$
+
+
+
+
+/work/ids$ scp /work/ids/iif.12.10.FC9.linux-x86_64.tar rdadmin1@40.121.155.24:/work/idsimg/.
+Password:
+iif.12.10.FC9.linux-x86_64.tar                                    100%  532MB 719.1KB/s   12:37
+
+
+
+/work$ ssh rdadmin1@40.121.155.24
+Password:
+Last login: Tue Aug  1 18:26:48 2017 from 32.97.110.52
+[rdadmin1@rdMasterVM1 ~]$ sudo waagent -deprovision+user -force
+[sudo] password for rdadmin1:
+WARNING! The waagent service will be stopped.
+WARNING! All SSH host key pairs will be deleted.
+WARNING! Cached DHCP leases will be deleted.
+WARNING! root password will be disabled. You will not be able to login as root.
+WARNING! /etc/resolv.conf will be deleted.
+WARNING! rdadmin1 account and entire home directory will be deleted.
+2017/08/01 19:27:03.474834 INFO Examine /proc/net/route for primary interface
+2017/08/01 19:27:03.491240 INFO Primary interface is [eth0]
+2017/08/01 19:27:03.498806 INFO interface [lo] has flags [73], is loopback [True]
+2017/08/01 19:27:03.512530 INFO Interface [lo] skipped
+2017/08/01 19:27:03.519299 INFO interface [eth0] has flags [4163], is loopback [False]
+2017/08/01 19:27:03.534778 INFO Interface [eth0] selected
+
+
+[rdadmin1@rdMasterVM1 ~]$ exit
+logout
+Connection to 40.121.155.24 closed.
+
+
+
+//////////////////////////////////////////////////////////
+
+/work$ az vm deallocate --resource-group rdResourceGroup1 --name rdMasterVM1
+{
+  "endTime": "2017-08-01T19:28:43.967137+00:00",
+  "error": null,
+  "name": "f7711907-6976-40f3-be69-744515a8cf24",
+  "startTime": "2017-08-01T19:28:02.904662+00:00",
+  "status": "Succeeded"
+}
+
+
+
+/work$ az vm generalize --resource-group rdResourceGroup1 --name rdMasterVM1
+
+
+
+/work$ az image create --resource-group rdResourceGroup1 --name GoldenImage1 --source rdMasterVM1
+{
+  "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/images/GoldenImage1",
+  "location": "eastus",
+  "name": "GoldenImage1",
+  "provisioningState": "Succeeded",
+  "resourceGroup": "rdResourceGroup1",
+  "sourceVirtualMachine": {
+    "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/virtualMachines/rdMasterVM1",
+    "resourceGroup": "rdResourceGroup1"
+  },
+  "storageProfile": {
+    "dataDisks": [
+      {
+        "blobUri": null,
+        "caching": "None",
+        "diskSizeGb": null,
+        "lun": 0,
+        "managedDisk": {
+          "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/disks/DataDisk1",
+          "resourceGroup": "rdResourceGroup1"
+        },
+        "snapshot": null,
+        "storageAccountType": null
+      }
+    ],
+    "osDisk": {
+      "blobUri": null,
+      "caching": "ReadWrite",
+      "diskSizeGb": null,
+      "managedDisk": {
+        "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/disks/osdisk_e583a87906",
+        "resourceGroup": "rdResourceGroup1"
+      },
+      "osState": "Generalized",
+      "osType": "Linux",
+      "snapshot": null,
+      "storageAccountType": null
+    }
+  },
+  "tags": null,
+  "type": "Microsoft.Compute/images"
+}
+
+
+
+
+/work$ az vm   deallocate -g rdResourceGroup1 -n rdMasterVM1
+{
+  "endTime": "2017-08-01T19:35:16.677180+00:00",
+  "error": null,
+  "name": "59fc9252-2b3a-421c-91e6-6aa6f5b3f7ee",
+  "startTime": "2017-08-01T19:35:15.099069+00:00",
+  "status": "Succeeded"
+}
+
+
+
+/work$ az vm   delete     -g rdResourceGroup1 -n rdMasterVM1 --yes
+{
+  "endTime": "2017-08-01T19:36:24.364669+00:00",
+  "error": null,
+  "name": "11d22cc6-ebaf-4bd2-a96f-a6d8ad930249",
+  "startTime": "2017-08-01T19:36:14.005320+00:00",
+  "status": "Succeeded"
+}
+
+
+
+/work$ az disk list     --resource-group rdResourceGroup1 --output table
+  DiskSizeGb  Location    Name               ProvisioningState    ResourceGroup    TimeCreated                       OsType
+------------  ----------  -----------------  -------------------  ---------------  --------------------------------  --------
+          10  eastus      DataDisk1          Succeeded            rdResourceGroup1      2017-08-01T18:18:03.163962+00:00
+          31  eastus      osdisk_e583a87906  Succeeded            rdResourceGroup1      2017-08-01T18:20:25.376716+00:00  Linux
+
+		  
+		  
+
+
+/work$ az disk delete   --name DataDisk1 --resource-group rdResourceGroup1 --yes
+{
+  "endTime": "2017-08-01T19:41:03.535617+00:00",
+  "error": null,
+  "name": "f1708cce-fea9-4124-8159-eff93424208c",
+  "startTime": "2017-08-01T19:41:03.254340+00:00",
+  "status": "Succeeded"
+}
+
+
+
+/work$ az disk delete   --name osdisk_e583a87906 --resource-group rdResourceGroup1 --yes
+{
+  "endTime": "2017-08-01T19:41:42.045785+00:00",
+  "error": null,
+  "name": "db50fb69-a3de-4590-aa9e-0a2fba55b03e",
+  "startTime": "2017-08-01T19:41:41.795782+00:00",
+  "status": "Succeeded"
+}
+
+/////////////// sat    az network nic list --resource-group rdResourceGroup1 
+/work$ az network nic list --resource-group rdResourceGroup1
+[
+  {
+    "dnsSettings": {
+      "appliedDnsServers": [],
+      "dnsServers": [],
+      "internalDnsNameLabel": null,
+      "internalDomainNameSuffix": null,
+      "internalFqdn": null
+    },
+    "enableAcceleratedNetworking": false,
+    "enableIpForwarding": false,
+    "etag": "W/\"a0ec0e0f-e99a-405e-90fc-92c9ba08ce41\"",
+    "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkInterfaces/rdMasterVM1VMNic",
+    "ipConfigurations": [
+      {
+        "applicationGatewayBackendAddressPools": null,
+        "etag": "W/\"a0ec0e0f-e99a-405e-90fc-92c9ba08ce41\"",
+        "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkInterfaces/rdMasterVM1VMNic/ipConfigurations/ipconfigrdMasterVM1",
+        "loadBalancerBackendAddressPools": null,
+        "loadBalancerInboundNatRules": null,
+        "name": "ipconfigrdMasterVM1",
+        "primary": true,
+        "privateIpAddress": "10.0.0.4",
+        "privateIpAddressVersion": "IPv4",
+        "privateIpAllocationMethod": "Dynamic",
+        "provisioningState": "Succeeded",
+        "publicIpAddress": {
+          "dnsSettings": null,
+          "etag": null,
+          "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/publicIPAddresses/rdMasterVM1PublicIP",
+          "idleTimeoutInMinutes": null,
+          "ipAddress": null,
+          "ipConfiguration": null,
+          "location": null,
+          "name": null,
+          "provisioningState": null,
+          "publicIpAddressVersion": null,
+          "publicIpAllocationMethod": null,
+          "resourceGroup": "rdResourceGroup1",
+          "resourceGuid": null,
+          "tags": null,
+          "type": null
+        },
+        "resourceGroup": "rdResourceGroup1",
+        "subnet": {
+          "addressPrefix": null,
+          "etag": null,
+          "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/virtualNetworks/rdMasterVM1VNET/subnets/rdMasterVM1Subnet",
+          "ipConfigurations": null,
+          "name": null,
+          "networkSecurityGroup": null,
+          "privateAccessServices": null,
+          "provisioningState": null,
+          "resourceGroup": "rdResourceGroup1",
+          "resourceNavigationLinks": null,
+          "routeTable": null
+        }
+      }
+    ],
+    "location": "eastus",
+    "macAddress": null,
+    "name": "rdMasterVM1VMNic",
+    "networkSecurityGroup": {
+      "defaultSecurityRules": null,
+      "etag": null,
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG",
+      "location": null,
+      "name": null,
+      "networkInterfaces": null,
+      "provisioningState": null,
+      "resourceGroup": "rdResourceGroup1",
+      "resourceGuid": null,
+      "securityRules": null,
+      "subnets": null,
+      "tags": null,
+      "type": null
+    },
+    "primary": null,
+    "provisioningState": "Succeeded",
+    "resourceGroup": "rdResourceGroup1",
+    "resourceGuid": "b916d378-c0a1-4e0f-8833-3aa4f3fb8367",
+    "tags": {},
+    "type": "Microsoft.Network/networkInterfaces",
+    "virtualMachine": null
+  }
+]
+
+
+/work$ az network nic delete --name rdMasterVM1VMNic --resource-group rdResourceGroup1
+
+
+/work$ az network public-ip list  --resource-group rdResourceGroup1
+
+[
+  {
+    "dnsSettings": null,
+    "etag": "W/\"fb2fff34-8e12-45ec-a28b-a9f92960d635\"",
+    "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/publicIPAddresses/rdMasterVM1PublicIP",
+    "idleTimeoutInMinutes": 4,
+    "ipAddress": null,
+    "ipConfiguration": null,
+    "location": "eastus",
+    "name": "rdMasterVM1PublicIP",
+    "provisioningState": "Succeeded",
+    "publicIpAddressVersion": "IPv4",
+    "publicIpAllocationMethod": "Dynamic",
+    "resourceGroup": "rdResourceGroup1",
+    "resourceGuid": "0e7f1a74-314a-4d07-bc69-72327057deeb",
+    "tags": {},
+    "type": "Microsoft.Network/publicIPAddresses"
+  }
+]
+
+
+
+/work$ az network public-ip delete --name  rdMasterVM1PublicIP --resource-group rdResourceGroup1
+
+
+/work$ az network vnet list  --resource-group rdResourceGroup1
+[
+  {
+    "addressSpace": {
+      "addressPrefixes": [
+        "10.0.0.0/16"
+      ]
+    },
+    "dhcpOptions": null,
+    "etag": "W/\"4b42ea63-2a75-4481-9bb4-78eeaa8b2c3d\"",
+    "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/virtualNetworks/rdMasterVM1VNET",
+    "location": "eastus",
+    "name": "rdMasterVM1VNET",
+    "provisioningState": "Succeeded",
+    "resourceGroup": "rdResourceGroup1",
+    "resourceGuid": "4cdf23e5-d90f-45fa-9da3-b128ef02c8a1",
+    "subnets": [
+      {
+        "addressPrefix": "10.0.0.0/24",
+        "etag": "W/\"4b42ea63-2a75-4481-9bb4-78eeaa8b2c3d\"",
+        "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/virtualNetworks/rdMasterVM1VNET/subnets/rdMasterVM1Subnet",
+        "ipConfigurations": null,
+        "name": "rdMasterVM1Subnet",
+        "networkSecurityGroup": null,
+        "privateAccessServices": null,
+        "provisioningState": "Succeeded",
+        "resourceGroup": "rdResourceGroup1",
+        "resourceNavigationLinks": null,
+        "routeTable": null
+      }
+    ],
+    "tags": {},
+    "type": "Microsoft.Network/virtualNetworks",
+    "virtualNetworkPeerings": []
+  }
+]
+
+
+/work$ az network vnet delete --name rdMasterVM1VNET --resource-group rdResourceGroup1
+
+
+
+/work$ az network nsg list -g rdResourceGroup1 -o table
+Location    Name          ProvisioningState    ResourceGroup    ResourceGuid
+----------  ------------  -------------------  ---------------  ------------------------------------
+eastus      rdMasterVM1NSG  Succeeded            rdResourceGroup1      4157c102-6f62-4c51-9c84-728fe7b6f1d6
+
+
+
+
+/work$ az network nsg show -g rdResourceGroup1 -n rdMasterVM1NSG
+{
+  "defaultSecurityRules": [
+    {
+      "access": "Allow",
+      "description": "Allow inbound traffic from all VMs in VNET",
+      "destinationAddressPrefix": "VirtualNetwork",
+      "destinationPortRange": "*",
+      "direction": "Inbound",
+      "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG/defaultSecurityRules/AllowVnetInBound",
+      "name": "AllowVnetInBound",
+      "priority": 65000,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "rdResourceGroup1",
+      "sourceAddressPrefix": "VirtualNetwork",
+      "sourcePortRange": "*"
+    },
+    {
+      "access": "Allow",
+      "description": "Allow inbound traffic from azure load balancer",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "*",
+      "direction": "Inbound",
+      "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+      "name": "AllowAzureLoadBalancerInBound",
+      "priority": 65001,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "rdResourceGroup1",
+      "sourceAddressPrefix": "AzureLoadBalancer",
+      "sourcePortRange": "*"
+    },
+    {
+      "access": "Deny",
+      "description": "Deny all inbound traffic",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "*",
+      "direction": "Inbound",
+      "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG/defaultSecurityRules/DenyAllInBound",
+      "name": "DenyAllInBound",
+      "priority": 65500,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "rdResourceGroup1",
+      "sourceAddressPrefix": "*",
+      "sourcePortRange": "*"
+    },
+    {
+      "access": "Allow",
+      "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+      "destinationAddressPrefix": "VirtualNetwork",
+      "destinationPortRange": "*",
+      "direction": "Outbound",
+      "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG/defaultSecurityRules/AllowVnetOutBound",
+      "name": "AllowVnetOutBound",
+      "priority": 65000,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "rdResourceGroup1",
+      "sourceAddressPrefix": "VirtualNetwork",
+      "sourcePortRange": "*"
+    },
+    {
+      "access": "Allow",
+      "description": "Allow outbound traffic from all VMs to Internet",
+      "destinationAddressPrefix": "Internet",
+      "destinationPortRange": "*",
+      "direction": "Outbound",
+      "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG/defaultSecurityRules/AllowInternetOutBound",
+      "name": "AllowInternetOutBound",
+      "priority": 65001,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "rdResourceGroup1",
+      "sourceAddressPrefix": "*",
+      "sourcePortRange": "*"
+    },
+    {
+      "access": "Deny",
+      "description": "Deny all outbound traffic",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "*",
+      "direction": "Outbound",
+      "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG/defaultSecurityRules/DenyAllOutBound",
+      "name": "DenyAllOutBound",
+      "priority": 65500,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "rdResourceGroup1",
+      "sourceAddressPrefix": "*",
+      "sourcePortRange": "*"
+    }
+  ],
+  "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+  "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG",
+  "location": "eastus",
+  "name": "rdMasterVM1NSG",
+  "networkInterfaces": null,
+  "provisioningState": "Succeeded",
+  "resourceGroup": "rdResourceGroup1",
+  "resourceGuid": "4157c102-6f62-4c51-9c84-728fe7b6f1d6",
+  "securityRules": [
+    {
+      "access": "Allow",
+      "description": null,
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "22",
+      "direction": "Inbound",
+      "etag": "W/\"35be6f94-513e-4637-b391-d7728b3513fe\"",
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Network/networkSecurityGroups/rdMasterVM1NSG/securityRules/default-allow-ssh",
+      "name": "default-allow-ssh",
+      "priority": 1000,
+      "protocol": "Tcp",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "rdResourceGroup1",
+      "sourceAddressPrefix": "*",
+      "sourcePortRange": "*"
+    }
+  ],
+  "subnets": null,
+  "tags": {},
+  "type": "Microsoft.Network/networkSecurityGroups"
+}
+
+
+
+/work$ az network nsg delete -n rdMasterVM1NSG -g rdResourceGroup1
+
+
+
+//////////////////////// Step 3: Create a VM from the captured GoldenImage ///////////////////////
+
+/work$ az group create  --name CustResGroup1 --location eastus
+{
+  "id": "/subscriptions/< GUID >/resourceGroups/CustResGroup1",
+  "location": "eastus",
+  "managedBy": null,
+  "name": "CustResGroup1",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null
+}
+
+
+
+/work$ az vm create --resource-group CustResGroup1 --name CustVM1 --image   "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/images/GoldenImage1"   --admin-username custadmin1  --authentication-type password
+Admin Password:
+Confirm Admin Password:
+{
+  "fqdns": "",
+  "id": "/subscriptions/< GUID >/resourceGroups/CustResGroup1/providers/Microsoft.Compute/virtualMachines/CustVM1",
+  "location": "eastus",
+  "macAddress": "00-0D-3A-11-58-88",
+  "powerState": "VM running",
+  "privateIpAddress": "10.0.0.4",
+  "publicIpAddress": "13.92.88.119",
+  "resourceGroup": "CustResGroup1"
+}
+
+
+/work$ az vm show --resource-group CustResGroup1 --name CustVM1 --show-details
+{
+  "availabilitySet": null,
+  "diagnosticsProfile": null,
+  "fqdns": "",
+  "hardwareProfile": {
+    "vmSize": "Standard_DS1_v2"
+  },
+  "id": "/subscriptions/< GUID >/resourceGroups/CustResGroup1/providers/Microsoft.Compute/virtualMachines/CustVM1",
+  "identity": null,
+  "licenseType": null,
+  "location": "eastus",
+  "macAddresses": "00-0D-3A-11-58-88",
+  "name": "CustVM1",
+  "networkProfile": {
+    "networkInterfaces": [
+      {
+        "id": "/subscriptions/< GUID >/resourceGroups/CustResGroup1/providers/Microsoft.Network/networkInterfaces/CustVM1VMNic",
+        "primary": null,
+        "resourceGroup": "CustResGroup1"
+      }
+    ]
+  },
+  "osProfile": {
+    "adminPassword": null,
+    "adminUsername": "custadmin1",
+    "computerName": "CustVM1",
+    "customData": null,
+    "linuxConfiguration": {
+      "disablePasswordAuthentication": false,
+      "ssh": null
+    },
+    "secrets": [],
+    "windowsConfiguration": null
+  },
+  "plan": null,
+  "powerState": "VM running",
+  "privateIps": "10.0.0.4",
+  "provisioningState": "Succeeded",
+  "publicIps": "13.92.88.119",
+  "resourceGroup": "CustResGroup1",
+  "resources": null,
+  "storageProfile": {
+    "dataDisks": [
+      {
+        "caching": "None",
+        "createOption": "fromImage",
+        "diskSizeGb": 10,
+        "image": null,
+        "lun": 0,
+        "managedDisk": {
+          "id": "/subscriptions/< GUID >/resourceGroups/CustResGroup1/providers/Microsoft.Compute/disks/CustVM1_disk2_51cb9f8dd8c345dc8e522db087669ea2",
+          "resourceGroup": "CustResGroup1",
+          "storageAccountType": "Standard_LRS"
+        },
+        "name": "CustVM1_disk2_51cb9f8dd8c345dc8e522db087669ea2",
+        "vhd": null
+      }
+    ],
+    "imageReference": {
+      "id": "/subscriptions/< GUID >/resourceGroups/rdResourceGroup1/providers/Microsoft.Compute/images/GoldenImage1",
+      "offer": null,
+      "publisher": null,
+      "resourceGroup": "rdResourceGroup1",
+      "sku": null,
+      "version": null
+    },
+    "osDisk": {
+      "caching": "ReadWrite",
+      "createOption": "fromImage",
+      "diskSizeGb": 31,
+      "encryptionSettings": null,
+      "image": null,
+      "managedDisk": {
+        "id": "/subscriptions/< GUID >/resourceGroups/CustResGroup1/providers/Microsoft.Compute/disks/osdisk_b3536b39eb",
+        "resourceGroup": "CustResGroup1",
+        "storageAccountType": "Premium_LRS"
+      },
+      "name": "osdisk_b3536b39eb",
+      "osType": "Linux",
+      "vhd": null
+    }
+  },
+  "tags": {},
+  "type": "Microsoft.Compute/virtualMachines",
+  "vmId": "24b8a719-9cd3-4936-8aed-38f76ca8d652"
+}
+
+
+
+
+/////////////////// Cleanup of CustVM1
+
+
+/work$ az vm   deallocate -g CustResGroup1 -n CustVM1
+{
+  "endTime": "2017-08-01T22:33:33.704935+00:00",
+  "error": null,
+  "name": "7b4ef888-d7f3-4629-873b-1df3dc18568e",
+  "startTime": "2017-08-01T22:31:52.828944+00:00",
+  "status": "Succeeded"
+}
+
+
+
+/work$ az vm   delete     -g CustResGroup1 -n CustVM1 --yes
+{
+  "endTime": "2017-08-01T22:36:05.677682+00:00",
+  "error": null,
+  "name": "8fafc649-2e98-4ece-9dd5-f6e2f92bc8b7",
+  "startTime": "2017-08-01T22:35:55.271342+00:00",
+  "status": "Succeeded"
+}
+
+/work$ az group delete  -n CustResGroup1  --yes
